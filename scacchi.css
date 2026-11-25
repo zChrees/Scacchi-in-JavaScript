@@ -1,0 +1,496 @@
+body{
+    background-image: url("sfondo scacchi.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    height:100vh;
+    display:flex;
+    align-items: center;
+    overflow-x: auto;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+
+    background: rgba(0, 0, 0, 0.492);
+
+    z-index:-1;
+}
+
+body.modal-open{
+    overflow: hidden;
+    padding-right:0 !important;
+}
+
+html{
+    overflow-y: scroll;
+}
+
+.GUI{
+    transform: scale(0.75);
+    display:grid;
+
+    grid-template-columns:
+        300px   /* timer */
+        auto    /* scacchiera */
+        300px;  /* mosse */
+
+    gap:30px;
+    position: absolute;
+    
+    
+}
+
+#table{
+    display: grid;
+    grid-template-columns: repeat(8, 100px);
+    grid-template-rows: repeat(8, 100px);
+    border: 9px solid #c09551;;
+}
+
+.display{
+    display: flex;
+    justify-content: center;
+    align-items: first baseline;
+}
+
+.bordo{
+    background:#1c1004fe;
+    padding:18px;
+    display:inline-block;
+    border:3px solid #1a0f0570;
+    box-shadow: 5px 5px 6px rgba(0, 0, 0, 0.505);
+}
+/*
+.storico{
+    background-color: rgba(128, 128, 128, 0.507);
+}
+*/
+.oak{
+    position: relative; /* questo ci serve a poter controllare la posizione di ogni elemento dentro il button (la casella)*/
+    background-color: #7c4719;
+}
+#table button.oak:hover{
+    background-color: #854d1b;;
+}
+
+.spruce{
+    position: relative; /* questo ci serve a poter controllare la posizione di ogni elemento dentro il button (la casella)*/
+    background-color: #c09551;
+}
+#table button.spruce:hover{
+    background-color: #c99d56;
+}
+.piece{
+    line-height:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color: inherit;
+    font-family:"Segoe UI Symbol","Noto Sans Symbols","Arial Unicode MS",serif;
+    transition: 0.1s;
+}
+
+.piece:hover{
+    transform: scale(1.05);
+}
+
+.white{
+    text-shadow: 
+        0px 0px 2px black,
+        0px 0px 5px rgba(0, 0, 0, 0.5),
+        0 0 3px rgba(0, 0, 0, 0.611);
+    color: rgb(208, 208, 170);
+}
+
+.black{
+    color: black;
+    text-shadow: 2px 1px 5px rgba(0, 0, 0, 0.475);
+}
+
+#table button{
+    border: 0px;
+    font-size: 5.2rem;
+}
+
+.mossaLegale{
+    position: absolute; /*questo ci serve a dire che questo elemento andra' posizionato esattamente all'interno dell'elemento padre (il button, ossia la casella) altrimenti verrebbe messo in mezzo alla pagina*/
+    width: 30px; /*larghezza*/
+    height: 30px; /*altezza*/
+    background: rgba(0, 0, 0, 0.237);  /*colore*/
+    border-radius: 50%;  /* forma, cerchio in questo caso */
+    top: 50%;  /* la pallina viene messa a metà nella direzione verticale*/
+    left: 50%;  /* la pallina viene messa a metà nella direzione orizzontale */
+    transform: translate(-50%, -50%); /* siccome il punto di riferimento della pallina è il suo angolo in alto a sinitra, ancora non è proprio al centro, con questo comando sistemiamo questa cosa */
+    pointer-events: none;  /* questo serve a permetterci di cliccare ancora il bottone sotto */
+}
+
+.catturaPezzo{
+    position: absolute; /*questo ci serve a dire che questo elemento andra' posizionato esattamente all'interno dell'elemento padre (il button, ossia la casella) altrimenti verrebbe messo in mezzo alla pagina*/
+    width: 98px; /*larghezza*/
+    height: 98px; /*altezza*/
+    border: 6px solid rgba(0, 0, 0, 0.367);  /*colore*/
+    border-radius: 50%;  /* forma, cerchio in questo caso */
+    top: 50%;  /* la pallina viene messa a metà nella direzione verticale*/
+    left: 50%;  /* la pallina viene messa a metà nella direzione orizzontale */
+    transform: translate(-50%, -50%); /* siccome il punto di riferimento della pallina è il suo angolo in alto a sinitra, ancora non è proprio al centro, con questo comando sistemiamo questa cosa */
+    pointer-events: none;  /* questo serve a permetterci di cliccare ancora il bottone sotto */
+}
+
+.pezzoSelezionato{
+    position: relative;
+    background-color: #dbb041;
+}
+
+.casellaIniziale{
+    position: relative;
+    background-color: #d1a63a;
+}
+
+.casellaFinale{
+    position: relative;
+    background-color: #d6a424;
+}
+
+.checkMate{
+    position: relative;
+    background-color: #8a0d0d;
+}
+
+.check{
+    background-color: #971515;
+    animation: pulseCheck 0.5s 3;
+}
+
+@keyframes pulseCheck {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.03);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-dialog{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+}
+
+.promozione-box{
+    width:200px;
+    height:200px;
+}
+
+#promozione{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    justify-items:center;
+    align-items:center;
+}
+
+.promozione-btn{
+    background-color: rgba(0, 0, 0, 0.097);
+    font-size:50px;
+    width:80px;
+    height:80px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border: none;
+    border-radius: 4px;
+    transition: 0.10s all;
+}
+
+.promozione-btn:hover{
+    background-color: rgba(0, 0, 0, 0.141);
+    transform:scale(1.1);
+}
+
+.timerContainer{
+    width: 250px;
+    height:658px; /* stessa altezza scacchiera */
+    margin-top: 100px;
+    margin-bottom: 100px;
+    margin-right: 18px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+
+.timer{
+    display: flex;
+    width:250px;
+    height: 125px;
+    padding:9px;
+
+    font-size:65px;
+    text-align:center;
+    justify-content: center;
+
+    font-weight:bold;
+    color:rgb(207, 207, 207);
+    text-shadow: 2px 2px 5px black;
+
+    border-radius:10px;
+
+    
+    background: rgba(255, 255, 255, 0);
+    border:1px solid rgba(255, 255, 255, 0);
+    transition: 0.2s;
+    opacity: 0.6;
+}
+
+.rigioca{
+    display: flex;
+    width:250px;
+    height: 80px;
+    padding:9px;
+
+    font-family: cursive;
+    text-align:center;
+    justify-content: center;
+
+    font-weight:bold;
+    color:rgb(207, 207, 207);
+    text-shadow: 2px 2px 5px black;
+
+    border-radius:10px;
+
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0);
+    border:1px solid rgba(255, 255, 255, 0.277);
+    transition: 0.2s;
+}
+
+body .rigioca{
+    font-size:37px;
+}
+
+.rigioca:hover{
+    transform: scale(1.1);
+}
+
+.activeTimer{
+    opacity: 1;
+    /*text-shadow:0 0 10px rgba(255, 255, 255, 0.592);*/
+    text-shadow:
+        0 0 5px rgba(255, 255, 255, 0.477),
+        0 0 10px rgba(255, 255, 255, 0.234),
+        0 0 20px rgba(255, 255, 255, 0.173);
+    transform: scale(1.4);
+}
+
+.lowTime{
+    text-shadow:
+        0 0 5px rgba(255, 0, 0, 0.679),
+        0 0 10px rgba(216, 0, 0, 0.336),
+        0 0 20px rgba(223, 0, 0, 0.196);
+    transform: scale(1.3);
+    color:#b70f0f;
+    animation:timerPulse 1s infinite;
+}
+
+@keyframes timerPulse{
+    0% {
+        transform: scale(1.3);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.3);
+        opacity: 0.8;
+    }
+}
+
+.tempoFinito{
+    text-shadow:
+        0 0 5px rgba(255, 0, 0, 0.679),
+        0 0 10px rgba(216, 0, 0, 0.336),
+        0 0 20px rgba(223, 0, 0, 0.196);
+    transform: scale(1.4);
+    color:#b70f0f;
+}
+
+.mosseContainer{
+    width:250px;
+    height:822px;  
+    margin-top: 18px;
+    margin-bottom: 18px;
+    margin-left: 40px;   /* stessa altezza scacchiera */
+    
+    overflow:hidden;  /* nasconde quelle fuori */
+
+    border-radius:10px;
+
+    backdrop-filter: blur(1px);
+    background: rgba(255, 255, 255, 0);
+
+    
+
+    scroll-behavior:smooth;
+    overflow-y:auto;
+    scrollbar-width: none; /* per firefox */
+}
+
+#mosseContainer::-webkit-scrollbar{
+    display: none;                /* per Chrome, Edge, Safari */
+}
+
+#storicoMoves{
+    display:flex;
+    flex-direction:column;
+}
+
+.mossa{
+    padding:6px 10px;
+    font-family: cursive;
+    font-size:22px;
+    color: white;
+    text-shadow: 2px 2px 5px black;
+    
+}
+
+.traversa{
+    font-weight: 700;
+    font-size: 22px;
+    position: absolute;
+    top: 0;
+    left: 5px;
+}
+
+.colonna{
+    font-weight: 700;
+    font-size: 22px;
+    position: absolute;
+    bottom: 0;
+    right: 5px;
+}
+
+.oak-carattere{
+    color: #7c4719;;
+}
+
+.spruce-carattere{
+    color: #c09551;
+}
+
+#gameOverScreen{
+    position:fixed;
+    inset:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    pointer-events:none;
+
+    backdrop-filter:blur(8px);
+
+    opacity:0;
+
+    transition:0.5s;
+    z-index: 1;
+}
+
+#gameOverScreen.show{
+    opacity:1;
+    pointer-events:auto;
+}
+
+#winnerText{
+    display: flex;
+    justify-content: center;
+    font-size:70px;
+    font-weight: bold;
+    text-shadow: 
+        0 0 5px rgba(0, 0, 0, 0.685),
+        0 0 10px rgba(0, 0, 0, 0.47),
+        0 0 20px rgba(0, 0, 0, 0.205);
+    color:white;
+}
+/*
+#gameOverScreen.show #winnerText{
+    animation:pop 2s ease;
+}
+*/
+
+.pop{
+    animation:pop 2s ease;
+}
+
+@keyframes pop{
+    0%{transform:scale(0.5); opacity:0;}
+    70%{transform:scale(1.1);}
+    100%{transform:scale(1);}
+}
+
+.bottoni{
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    transition: 0.8s;
+}
+
+.buttonShow{
+    display: flex;
+    justify-content:center;
+    opacity: 1;
+}
+
+#gameOverScreen .rigioca{
+    margin-left: 16px;
+    margin-top:55px;
+    color: white;
+}
+
+#gameOverScreen .rigioca:hover{
+    transform: scale(1.1);
+}
+  
+.backToMenu{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    width:150px;
+    height: 50px;
+    padding:9px;
+
+    font-size: 19px;
+    font-family: cursive;
+    text-align:center;
+    
+
+    font-weight:bold;
+    color:rgb(207, 207, 207);
+    text-shadow: 2px 2px 5px black;
+
+    border-radius:10px;
+
+    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0);
+    border:1px solid rgba(133, 133, 133, 0.503);
+    transition: 0.2s;
+}
+
+.backToMenu:hover{
+    transform: scale(1.1);
+}

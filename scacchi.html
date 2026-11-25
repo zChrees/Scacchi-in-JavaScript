@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="scacchi.css">
+    <title>Scacchi</title>
+</head>
+<body>
+    <!-- MODAL PER LA PROMOZIONE DEL PEDONE -->
+    <div class="modal fade" id="promozioneModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content promozione-box">
+
+        <div class="modal-body d-flex justify-content-center align-items-center">
+            <div class="d-grid grid-2" id="promozione">
+                
+            </div>
+        </div>
+
+        </div>
+    </div>
+    </div>
+
+    <!-- DIV PER IL VINCITORE -->
+    <div id="gameOverScreen">
+        <div>
+            <div id="winnerText"></div>
+            <div class="bottoni">
+                <button id="gameOverRestart" class="rigioca" style="font-size: 30px;">New Game</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="GUI">
+        <!-- TIMER -->
+        <div class="timerContainer">
+            <div id="blackTimer" class="timer">10:00</div>
+            <button id="restart" class="rigioca">New Game</button>
+            <div id="whiteTimer" class="timer">10:00</div>
+        </div>
+
+        <!-- SCACCHIERA -->
+        
+        <div class="bordo">
+            <div id="table"></div>
+        </div> 
+
+        <!-- MOSSE -->
+        <div class="mosseContainer">
+            <div id="storicoMoves"></div>
+        </div>
+    </div>
+    
+    <script src="https://unpkg.com/tau-prolog@0.3.4/modules/core.js"></script>
+    <script src="https://unpkg.com/tau-prolog@0.3.4/modules/lists.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" crossorigin="anonymous"></script>
+    <script src="scacchi.js"></script>
+</body>
+</html>
